@@ -6,8 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Long> {
-    // Spring Data JPA will automatically provide methods like:
-    // save(), findById(), findAll(), deleteById(), etc.
-    // You can also define custom query methods here if needed.
+    Student findByRollNumber(String rollNumber);
 }
-

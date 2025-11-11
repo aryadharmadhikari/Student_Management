@@ -4,21 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Management System</title>
-    <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- LeafletJS CSS for map rendering -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     <style>
         /* A common, clean font */
         body {
             font-family: 'Inter', sans-serif;
             scroll-behavior: smooth;
-        }
-        /* Set a fixed height for the map container */
-        #map {
-            height: 300px;
-            border-radius: 0.5rem;
-            border: 1px solid #d1d5db; /* slate-300 */
         }
     </style>
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
@@ -26,26 +17,24 @@
 <body class="bg-slate-100 text-slate-800">
 
     <main class="flex flex-col">
-        <!-- --- Section 1: Full-Screen Form --- -->
         <section class="min-h-screen flex flex-col items-center justify-center p-4 md:p-8">
             <header class="text-center mb-6">
                 <h1 class="text-4xl font-bold text-slate-700">Student Management System</h1>
                 <p class="text-slate-500 mt-2">A simple interface to manage student records.</p>
             </header>
 
-            <!-- Form Card -->
             <div class="w-full max-w-4xl bg-white p-6 rounded-lg shadow-xl">
                 <h2 id="form-title" class="text-2xl font-semibold mb-4 border-b pb-2">Add New Student</h2>
                 <form id="student-form" class="space-y-4">
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label for="id" class="block text-sm font-medium text-slate-600">Student ID<span class="text-red-500">*</span></label>
-                            <input type="number" id="id" name="id" required class="mt-1 block w-full p-2 border border-slate-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" placeholder="e.g. 202301001">
+                            <label for="rollNumber" class="block text-sm font-medium text-slate-600">Roll Number<span class="text-red-500">*</span></label>
+                            <input type="text" id="rollNumber" name="rollNumber" required class="mt-1 block w-full p-2 border border-slate-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" placeholder="e.g. S001">
                         </div>
                         <div>
-                            <label for="rollNo" class="block text-sm font-medium text-slate-600">Roll No<span class="text-red-500">*</span></label>
-                            <input type="text" id="rollNo" name="rollNo" required class="mt-1 block w-full p-2 border border-slate-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" placeholder="e.g. S001">
+                            <label for="email" class="block text-sm font-medium text-slate-600">Email<span class="text-red-500">*</span></label>
+                            <input type="email" id="email" name="email" required class="mt-1 block w-full p-2 border border-slate-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
                         </div>
                     </div>
                      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -58,16 +47,6 @@
                             <input type="text" id="lastName" name="lastName" class="mt-1 block w-full p-2 border border-slate-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
                         </div>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                         <div>
-                            <label for="collegeName" class="block text-sm font-medium text-slate-600">College Name</label>
-                            <input type="text" id="collegeName" name="collegeName" class="mt-1 block w-full p-2 border border-slate-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                        </div>
-                        <div>
-                            <label for="email" class="block text-sm font-medium text-slate-600">Email<span class="text-red-500">*</span></label>
-                            <input type="email" id="email" name="email" required class="mt-1 block w-full p-2 border border-slate-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                        </div>
-                    </div>
                      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
                             <label for="department" class="block text-sm font-medium text-slate-600">Department</label>
@@ -75,29 +54,12 @@
                         </div>
                         <div>
                             <label for="year" class="block text-sm font-medium text-slate-600">Year</label>
-                            <input type="number" id="year" name="year" class="mt-1 block w-full p-2 border border-slate-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                            <input type="number" id="year" name="year" min="1" max="4" class="mt-1 block w-full p-2 border border-slate-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
                         </div>
                         <div>
                             <label for="gpa" class="block text-sm font-medium text-slate-600">GPA</label>
-                            <input type="number" step="0.1" id="gpa" name="gpa" class="mt-1 block w-full p-2 border border-slate-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                            <input type="number" step="0.1" id="gpa" name="gpa" min="0.0" max="10.0" class="mt-1 block w-full p-2 border border-slate-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
                         </div>
-                    </div>
-                    
-                    <!-- Location Section -->
-                    <div class="space-y-2 pt-2">
-                       <label class="block text-sm font-medium text-slate-600">Location</label>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                               <label for="latitude" class="block text-xs font-medium text-slate-500">Latitude</label>
-                                <input type="number" step="any" id="latitude" name="latitude" placeholder="e.g., 19.0760" class="mt-1 block w-full p-2 border border-slate-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                            </div>
-                            <div>
-                               <label for="longitude" class="block text-xs font-medium text-slate-500">Longitude</label>
-                                <input type="number" step="any" id="longitude" name="longitude" placeholder="e.g., 72.8777" class="mt-1 block w-full p-2 border border-slate-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                            </div>
-                        </div>
-                        <div id="map"></div>
-                         <p class="text-xs text-center text-slate-500">Click on the map or drag the pin to select a location.</p>
                     </div>
 
                     <div class="flex items-center space-x-2 pt-4">
@@ -115,7 +77,6 @@
             </a>
         </section>
 
-        <!-- --- Section 2: Student List --- -->
         <section id="student-list-section" class="bg-white py-16 px-4 md:px-8">
             <div class="container mx-auto">
                  <h2 class="text-3xl font-bold text-slate-700 text-center mb-8">Student Records</h2>
@@ -125,49 +86,36 @@
                         <thead class="bg-slate-50 border-b">
                             <tr>
                                 <th class="p-3 font-semibold text-sm uppercase">Student ID</th>
-                                <th class="p-3 font-semibold text-sm uppercase">Roll No</th>
+                                <th class="p-3 font-semibold text-sm uppercase">Roll Number</th>
                                 <th class="p-3 font-semibold text-sm uppercase">Name</th>
-                                <th class="p-3 font-semibold text-sm uppercase">College</th>
                                 <th class="p-3 font-semibold text-sm uppercase">Email</th>
-                                <th class="p-3 font-semibold text-sm uppercase">Location (Lat, Lng)</th>
+                                <th class="p-3 font-semibold text-sm uppercase">Department</th>
+                                <th class="p-3 font-semibold text-sm uppercase">Year</th>
+                                <th class="p-3 font-semibold text-sm uppercase">GPA</th>
                                 <th class="p-3 font-semibold text-sm uppercase">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="student-table-body" class="divide-y">
-                            <!-- JS will populate this section -->
-                        </tbody>
+                            </tbody>
                     </table>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- LeafletJS for map rendering -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         // --- State and Configuration ---
         const API_URL = 'http://localhost:8080/api/students';
         let students = [];
         let isEditing = false;
-        let editingId = null;
+        let editingId = null; // This will store the student's database ID (e.g., 1, 2, 3)
 
         // --- DOM Elements ---
         const form = document.getElementById('student-form');
         const tableBody = document.getElementById('student-table-body');
         const errorMessage = document.getElementById('error-message');
-        const latInput = document.getElementById('latitude');
-        const lngInput = document.getElementById('longitude');
-        const idInput = document.getElementById('id');
-
-        // --- Map Initialization ---
-        const defaultCoords = [19.0760, 72.8777]; // Mumbai
-        const map = L.map('map').setView(defaultCoords, 12);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-        const marker = L.marker(defaultCoords, { draggable: true }).addTo(map);
+        const rollNumberInput = document.getElementById('rollNumber');
 
         // --- UI and State Update Functions ---
         const showError = (message) => {
@@ -180,24 +128,23 @@
             tableBody.innerHTML = '';
             // Sort students by ID for consistent ordering
             const sortedStudents = students.sort((a, b) => a.id - b.id);
+            const tableCols = 8; // Updated number of columns
 
             if (sortedStudents.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-slate-500">No students found. Add one using the form.</td></tr>`;
+                tableBody.innerHTML = `<tr><td colspan="${tableCols}" class="text-center py-8 text-slate-500">No students found. Add one using the form.</td></tr>`;
                 return;
             }
             sortedStudents.forEach(student => {
                 const row = document.createElement('tr');
                 row.className = 'hover:bg-slate-50 transition duration-150';
-                const locationText = (student.latitude && student.longitude) 
-                    ? `${parseFloat(student.latitude).toFixed(4)}, ${parseFloat(student.longitude).toFixed(4)}`
-                    : 'N/A';
                 row.innerHTML = `
                     <td class="p-3 text-sm text-slate-700 font-mono">${student.id}</td>
-                    <td class="p-3 text-sm text-slate-700">${student.rollNo}</td>
+                    <td class="p-3 text-sm text-slate-700">${student.rollNumber}</td>
                     <td class="p-3 text-sm text-slate-700">${student.firstName} ${student.lastName || ''}</td>
-                    <td class="p-3 text-sm text-slate-700">${student.collegeName || ''}</td>
                     <td class="p-3 text-sm text-slate-700">${student.email}</td>
-                    <td class="p-3 text-sm text-slate-700">${locationText}</td>
+                    <td class="p-3 text-sm text-slate-700">${student.department || 'N/A'}</td>
+                    <td class="p-3 text-sm text-slate-700">${student.year || 'N/A'}</td>
+                    <td class="p-3 text-sm text-slate-700">${student.gpa || 'N/A'}</td>
                     <td class="p-3">
                         <div class="flex items-center space-x-2">
                             <button data-id="${student.id}" class="edit-btn text-indigo-600 hover:text-indigo-900 p-1" title="Edit">✏️</button>
@@ -208,15 +155,6 @@
                 tableBody.appendChild(row);
             });
         };
-
-        const updateMapAndInputs = (lat, lng, zoom = 13) => {
-            latInput.value = lat ? lat.toFixed(5) : '';
-            lngInput.value = lng ? lng.toFixed(5) : '';
-            if (lat && lng) {
-                marker.setLatLng([lat, lng]);
-                map.setView([lat, lng], zoom);
-            }
-        };
         
         const clearForm = () => {
             form.reset();
@@ -224,15 +162,13 @@
             editingId = null;
             document.getElementById('form-title').textContent = 'Add New Student';
             document.getElementById('submit-button').textContent = 'Add Student';
-            idInput.readOnly = false;
-            idInput.classList.remove('bg-slate-100');
             hideError();
-            updateMapAndInputs(defaultCoords[0], defaultCoords[1], 12); // Reset map
         };
 
         // --- API & Data Functions ---
         const fetchStudents = async () => {
-            tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-slate-500">Loading...</td></tr>`;
+            const tableCols = 8;
+            tableBody.innerHTML = `<tr><td colspan="${tableCols}" class="text-center py-8 text-slate-500">Loading...</td></tr>`;
             hideError();
             try {
                 const response = await fetch(API_URL);
@@ -244,7 +180,7 @@
             } catch (error) {
                 showError('Failed to fetch students from the server. Is the backend running?');
                 console.error('Fetch error:', error);
-                tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-red-500">Error loading data.</td></tr>`;
+                tableBody.innerHTML = `<tr><td colspan="${tableCols}" class="text-center py-8 text-red-500">Error loading data.</td></tr>`;
             }
         };
 
@@ -255,16 +191,15 @@
             const studentData = Object.fromEntries(formData.entries());
 
             // Convert form strings to correct data types
-            studentData.id = parseInt(studentData.id);
             if(studentData.year) studentData.year = parseInt(studentData.year);
             if(studentData.gpa) studentData.gpa = parseFloat(studentData.gpa);
-            if(studentData.latitude) studentData.latitude = parseFloat(studentData.latitude);
-            if(studentData.longitude) studentData.longitude = parseFloat(studentData.longitude);
+            // ID is no longer part of the form data for creation
 
             try {
                 let response;
                 if (isEditing) {
                     // ** API CALL: PUT to update an existing student **
+                    // The ID is not in the form, it's stored in editingId
                     response = await fetch(`${API_URL}/${editingId}`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
@@ -282,8 +217,10 @@
                 if (!response.ok) {
                     // Try to get a more specific error message from the backend
                     let errorMsg = `HTTP error! Status: ${response.status}`;
-                    if(response.status === 409) errorMsg = `Student with ID ${studentData.id} already exists.`;
-                    if(response.status === 400) errorMsg = 'Invalid data submitted. Please check all required fields.';
+                    // Handle unique constraint violations (e.g., duplicate rollNumber or email)
+                    if(response.status === 409 || response.status === 400) {
+                         errorMsg = 'Failed to submit. A student with this Roll Number or Email may already exist.';
+                    }
                     throw new Error(errorMsg);
                 }
 
@@ -301,17 +238,16 @@
                 const id = editButton.dataset.id;
                 const student = students.find(s => s.id == id);
                 if (student) {
+                    // Populate the form with the student's data
                     Object.keys(student).forEach(key => {
-                        if (form.elements[key]) form.elements[key].value = student[key];
+                        if (form.elements[key]) {
+                            form.elements[key].value = student[key];
+                        }
                     });
                     isEditing = true;
-                    editingId = id;
+                    editingId = id; // Store the ID for the PUT request
                     document.getElementById('form-title').textContent = 'Edit Student';
                     document.getElementById('submit-button').textContent = 'Update Student';
-                    idInput.readOnly = true;
-                    idInput.classList.add('bg-slate-100');
-                    
-                    updateMapAndInputs(student.latitude, student.longitude);
                     
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
@@ -341,30 +277,6 @@
         });
         
         document.getElementById('clear-button').addEventListener('click', clearForm);
-
-        // Map Event Listeners
-        map.on('click', (e) => updateMapAndInputs(e.latlng.lat, e.latlng.lng));
-        marker.on('dragend', (e) => {
-            const { lat, lng } = marker.getLatLng();
-            updateMapAndInputs(lat, lng);
-        });
-        latInput.addEventListener('input', () => {
-            const lat = parseFloat(latInput.value);
-            const lng = parseFloat(lngInput.value);
-            if (!isNaN(lat) && !isNaN(lng)) {
-                marker.setLatLng([lat, lng]);
-                map.setView([lat, lng]);
-            }
-        });
-        lngInput.addEventListener('input', () => {
-            const lat = parseFloat(latInput.value);
-            const lng = parseFloat(lngInput.value);
-            if (!isNaN(lat) && !isNaN(lng)) {
-                marker.setLatLng([lat, lng]);
-                map.setView([lat, lng]);
-            }
-        });
-
 
         // --- Initial Load ---
         fetchStudents();

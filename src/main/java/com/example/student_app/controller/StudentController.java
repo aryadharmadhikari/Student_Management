@@ -4,8 +4,6 @@ import com.example.student_app.model.Student;
 import com.example.student_app.service.StudentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,39 +13,35 @@ import java.util.List;
 @CrossOrigin(origins = "*") // Allows communication with the frontend
 public class StudentController {
 
-    private final StudentService studentService;
+    private final StudentService service; // Renamed from studentService
 
     @Autowired
-    public StudentController(StudentService studentService) {
-        this.studentService = studentService;
+    public StudentController(StudentService service) {
+        this.service = service;
     }
 
     @GetMapping
-    public List<Student> getAllStudents() {
-        return studentService.getAllStudents();
+    public List<Student> getAll() {
+        return service.getAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Student> getStudentById(@PathVariable Long id) {
-        Student student = studentService.getStudentById(id);
-        return ResponseEntity.ok(student);
+    public Student getById(@PathVariable Long id) {
+        return service.getById(id);
     }
 
     @PostMapping
-    public ResponseEntity<Student> createStudent(@Valid @RequestBody Student student) {
-        Student createdStudent = studentService.createStudent(student);
-        return new ResponseEntity<>(createdStudent, HttpStatus.CREATED);
+    public Student create(@Valid @RequestBody Student student) {
+        return service.create(student);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Student> updateStudent(@PathVariable Long id, @Valid @RequestBody Student studentDetails) {
-        Student updatedStudent = studentService.updateStudent(id, studentDetails);
-        return ResponseEntity.ok(updatedStudent);
+    public Student update(@PathVariable Long id, @Valid @RequestBody Student student) {
+        return service.update(id, student);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
-        studentService.deleteStudent(id);
-        return ResponseEntity.noContent().build(); // 204 No Content on successful deletion
+    public void delete(@PathVariable Long id) {
+        service.delete(id);
     }
 }

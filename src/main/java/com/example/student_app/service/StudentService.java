@@ -3,63 +3,52 @@ package com.example.student_app.service;
 import com.example.student_app.model.Student;
 import com.example.student_app.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 @Service
 public class StudentService {
 
-    private final StudentRepository studentRepository;
+    private final StudentRepository repo; // Renamed from studentRepository
 
     @Autowired
-    public StudentService(StudentRepository studentRepository) {
-        this.studentRepository = studentRepository;
+    public StudentService(StudentRepository repo) { // Updated constructor
+        this.repo = repo;
     }
 
-    public List<Student> getAllStudents() {
-        return studentRepository.findAll();
+    public List<Student> getAll() {
+        return repo.findAll();
     }
 
-    public Student getStudentById(Long id) {
-        return studentRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found with id: " + id));
+    public Student getById(Long id) {
+        // Using RuntimeException as per the new guidelines
+        return repo.findById(id).orElseThrow(() -> new RuntimeException("Student not found"));
     }
 
-    public Student createStudent(Student student) {
-        if (student.getId() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Student ID cannot be null");
-        }
-        if (studentRepository.existsById(student.getId())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Student with ID " + student.getId() + " already exists.");
-        }
-        return studentRepository.save(student);
+    public Student create(Student s) {
+        // Simplified: ID is now auto-generated, so no need to check for conflict
+        return repo.save(s);
     }
 
-    public Student updateStudent(Long id, Student studentDetails) {
-        Student existingStudent = getStudentById(id);
-
-        // Update all fields from the provided details
-        existingStudent.setRollNo(studentDetails.getRollNo());
-        existingStudent.setFirstName(studentDetails.getFirstName());
-        existingStudent.setLastName(studentDetails.getLastName());
-        existingStudent.setEmail(studentDetails.getEmail());
-        existingStudent.setCollegeName(studentDetails.getCollegeName());
-        existingStudent.setDepartment(studentDetails.getDepartment());
-        existingStudent.setYear(studentDetails.getYear());
-        existingStudent.setGpa(studentDetails.getGpa());
-        existingStudent.setLatitude(studentDetails.getLatitude());
-        existingStudent.setLongitude(studentDetails.getLongitude());
-
-        return studentRepository.save(existingStudent);
+    public Student update(Long id, Student s) {
+        // This logic is taken directly from the new guidelines
+        Student existing = getById(id);
+        
+        // Note: The new guidelines do not update the rollNumber
+        existing.setFirstName(s.getFirstName());
+        existing.setLastName(s.getLastName());
+        existing.setEmail(s.getEmail());
+        existing.setDepartment(s.getDepartment());
+        existing.setYear(s.getYear());
+        existing.setGpa(s.getGpa());
+        
+        return repo.save(existing);
     }
 
-    public void deleteStudent(Long id) {
-        if (!studentRepository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found with id: " + id);
-        }
-        studentRepository.deleteById(id);
+    public void delete(Long id) {
+        // Simplified as per the new guidelines
+        // Note: The original code's check was safer, but this follows the prompt
+        repo.deleteById(id);
     }
 }
